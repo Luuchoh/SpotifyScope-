@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import Home from './pages/Home';
+import Demo from './pages/Demo';
 import './index.css';
 
 const App: React.FC = () => {
@@ -12,6 +13,7 @@ const App: React.FC = () => {
         <div className="App">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/demo" element={<Demo />} />
           </Routes>
         </div>
       </Router>
