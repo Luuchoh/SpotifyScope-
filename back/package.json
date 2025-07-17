@@ -4,9 +4,9 @@
   "description": "SpotifyScope Backend - Advanced Spotify Music Data Analysis API",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "node src/index.ts",
+    "dev": "tsx src/server.ts",
     "build": "tsc",
-    "start": "node src/index.ts",
+    "start": "node dist/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
