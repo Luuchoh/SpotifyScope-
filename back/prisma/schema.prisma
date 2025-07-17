@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  spotifyId    String   @unique
+  email        String   @unique
+  displayName  String
+  profileImage String?
+  accessToken  String?
+  refreshToken String?
+  tokenExpiry  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  analyticsSnapshots AnalyticsSnapshot[]
+  
+  @@map("users")
+}
+
+model AnalyticsSnapshot {
+  id        String   @id @default(cuid())
+  userId    String
+  dataType  String   // 'topTracks', 'topArtists', 'recentlyPlayed', 'audioFeatures', etc.
+  timeRange String   // 'short_term', 'medium_term', 'long_term'
+  data      Json     // JSONB field to store the actual data
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("analytics_snapshots")
+  @@index([userId, dataType, timeRange])
+  @@index([expiresAt])
+}
+
+model PublicCache {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("public_cache")
+  @@index([key])
+  @@index([expiresAt])
+}
