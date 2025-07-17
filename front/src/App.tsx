@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import Home from './pages/Home';
 import Demo from './pages/Demo';
+import Login from './pages/Login';
 import './index.css';
 
 const App: React.FC = () => {
@@ -14,6 +15,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/demo" element={<Demo />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </Router>
