@@ -34,7 +34,11 @@ const startServer = async (): Promise<void> => {
       logger.warn('Running without Redis. Some features may be limited.');
     }
     
-    
+    app.listen(PORT, () => {
+      logger.info(`Server running on port ${PORT}`);
+      logger.info(`Environment: ${process.env['NODE_ENV'] || 'development'}`);
+      logger.info(`Redis: ${redisConnected ? 'Connected' : 'Not available'}`);
+    });
   } catch (error) {
     logger.error('Failed to start server:', error);
     await disconnectRedis();
