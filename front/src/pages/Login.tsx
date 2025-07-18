@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Layout from '../components/Layout/Layout';
-import { authService } from '../services/authService';
+import { apiService } from '../services/api';
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -11,8 +10,7 @@ const Login: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await authService.getSpotifyAuthUrl();
+      const response = await apiService.login();
       window.location.href = response.authUrl;
     } catch (err) {
       setError('Failed to initiate Spotify login');
@@ -23,14 +21,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gradient-to-br from-[#1a2e22] via-[#0e1a14] to-[#0a0f0b] p-4 pt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="max-w-md mx-auto"
+        className="w-full max-w-md"
       >
-        <div className="bg-gray-800 p-8 rounded-lg text-center">
+        <div className="bg-gradient-to-br from-[#1a2e22]/80 via-[#0e1a14]/90 to-[#0a0f0b]/90 backdrop-blur-sm p-8 rounded-xl text-center shadow-2xl border border-spotify-green/20">
           <h1 className="text-3xl font-bold text-white mb-6">
             Login to SpotifyScope
           </h1>
@@ -68,7 +66,7 @@ const Login: React.FC = () => {
           </p>
         </div>
       </motion.div>
-    </Layout>
+    </div>
   );
 };
 
