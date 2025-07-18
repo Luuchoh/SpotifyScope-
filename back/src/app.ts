@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import { logger } from '@/config/logger.js';
 import { generalLimiter } from '@/middleware/rateLimiter.js';
 import authRoutes from '@/routes/auth.js';
@@ -10,7 +11,19 @@ import musicRoutes from '@/routes/music.js';
 const app: express.Application = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://api.spotify.com", "https://accounts.spotify.com"],
+    },
+  },
+}));
+
 app.use(cors({
   origin: process.env['FRONTEND_URL'] || 'http://localhost:3000',
   credentials: true,
@@ -29,6 +42,7 @@ app.use(morgan('combined', {
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
 
 // Health check
 app.get('/health', (req, res) => {
